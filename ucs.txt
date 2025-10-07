@@ -1,0 +1,58 @@
+import heapq
+
+def uniform_cost_search(graph, start, goals):
+    """
+    Perform Uniform Cost Search (UCS) on a weighted graph.
+    :param graph: dict, adjacency list with edge costs {node: [(neighbor, cost), ...]}
+    :param start: starting node
+    :param goals: set of goal nodes
+    :return: (path, cost) of the first goal reached with minimum cost
+    """
+    # Priority queue → stores (cost, path)
+    pq = [(0, [start])]
+    visited = set()
+
+    while pq:
+        cost, path = heapq.heappop(pq)
+        node = path[-1]
+
+        if node in visited:
+            continue
+        visited.add(node)
+
+        # If we reached a goal → return
+        if node in goals:
+            return path, cost
+
+        # Expand neighbors
+        for neighbor, edge_cost in graph.get(node, []):
+            if neighbor not in visited:
+                new_cost = cost + edge_cost
+                new_path = path + [neighbor]
+                heapq.heappush(pq, (new_cost, new_path))
+
+    return None, float("inf")  # no path found
+
+
+# Example usage
+if __name__ == "__main__":
+    # Weighted graph as adjacency list
+    graph = {
+        'A': [('B', 2), ('C', 4)],
+        'B': [('D', 7), ('E', 3)],
+        'C': [('F', 1)],
+        'D': [],
+        'E': [('F', 1), ('G', 5)],
+        'F': [('H', 2)],
+        'G': [('H', 1)],
+        'H': []
+    }
+
+    start_node = 'A'
+    goal_nodes = {'F', 'H'}  # multiple possible goals
+
+    path, cost = uniform_cost_search(graph, start_node, goal_nodes)
+
+    print("UCS Result:")
+    print("Path to Goal:", path)
+    print("Total Cost:", cost)

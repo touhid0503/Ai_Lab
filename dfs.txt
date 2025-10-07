@@ -1,0 +1,42 @@
+# Depth-First Search (DFS) using an explicit stack
+
+def dfs_traversal(graph, start, goal):
+    marked = {node: False for node in graph}  # track visited nodes
+    stack = [start]                           # initialize stack
+    traversal_order = []                      # store traversal path
+
+    while stack:
+        v = stack.pop()                       # pop from stack (LIFO)
+        if not marked[v]:
+            traversal_order.append(v)         # record visit
+            marked[v] = True                  # mark visited
+
+            if v == goal:                     # stop if goal reached
+                return traversal_order
+
+            # push neighbors in reverse to maintain left-to-right order
+            for w in reversed(graph[v]):
+                if not marked[w]:
+                    stack.append(w)
+
+    return traversal_order  # in case goal not found, return full traversal
+
+
+# Example usage
+if __name__ == "__main__":
+    # Example tree (as adjacency list)
+    graph = {
+        'A': ['B', 'C'],
+        'B': ['D', 'E'],
+        'C': ['F', 'G'],
+        'D': [],
+        'E': [],
+        'F': [],
+        'G': []
+    }
+
+    start_node = 'A'
+    goal_node = 'F'
+
+    order = dfs_traversal(graph, start_node, goal_node)
+    print("DFS Traversal Order:", order)
