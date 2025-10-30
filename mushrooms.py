@@ -1,5 +1,5 @@
 
-
+#29-10-25
 import kagglehub
 from kagglehub import KaggleDatasetAdapter
 
@@ -23,3 +23,4 @@ df['class'].map({'e':0, 'p':1})
 path = kagglehub.dataset_download("uciml/mushroom-classification")
 
 print("Path to dataset files:", path)
+
